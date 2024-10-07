@@ -1,6 +1,6 @@
 {
     "name": "@zhangquanmei/magic-utils",
-    "version": "1.0.14",
+    "version": "1.0.15",
     "description": "utils包",
     "main": "./dist/index.cjs.js",
     "exports": {
@@ -14,7 +14,7 @@
         "test": "jest",
         "build": "webpack --config webpack.config.js",
         "preversion": "npm run test && npm run build",
-        "version": "git add -A dist && git commit -m 'build: release v%s'",
+        "version": "git add . && git commit -m 'build: release v%s'",
         "postversion": "git push && git push --tags && npm publish"
     },
     "author": "zhangquanmei",
