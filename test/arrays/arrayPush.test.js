@@ -1,7 +1,7 @@
 // arrayPush.test.js
 
 // 引入 assert 库用于断言
-import {utils} from '../../src/index.js'
+import utils from '../../src/index.js'
 const assert = require('assert');
 
 const {arrayPush} = utils;
