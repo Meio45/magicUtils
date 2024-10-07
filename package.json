@@ -14,7 +14,7 @@
         "test": "jest",
         "build": "webpack --config webpack.config.js",
         "preversion": "npm run test && npm run build",
-        "version": "git add . && git commit -m 'build: release v%s' && git tag v%s && git push && git push --tags",
+        "version": "git tag v%s && git push && git push --tags",
         "postversion": "npm publish"
     },
     "author": "zhangquanmei",
