@@ -14,8 +14,8 @@
         "test": "jest",
         "build": "webpack --config webpack.config.js",
         "preversion": "npm run test && npm run build",
-        "version": "git add package.json package-lock.json && git commit -m 'build: release v%s'",
-        "postversion": "git push && npm publish"
+        "version": "git add package.json package-lock.json && git commit -m 'build: release v%s && git push'",
+        "postversion": "npm publish"
     },
     "author": "zhangquanmei",
     "license": "MIT",
