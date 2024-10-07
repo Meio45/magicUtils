@@ -1,0 +1,6 @@
+*.js
+src/
+babel.config.json
+webpack.config.js
+npm-debug.log
+node_modules/

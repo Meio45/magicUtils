@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Using Custom Lodash</title>
+</head>
+
+<body>
+    <script src="lodash-custom.js"></script>
+    <script>
+        // 使用自定义lodash实例
+        const numbers = [1, 2, 3];
+        const MagicMeio = window.MagicMeio;
+        console.log('MagicMeio11', MagicMeio);
+        const tripled = MagicMeio.map(numbers, n => n * 3);
+        console.log(tripled);
+        // 输出: [3, 6, 9]
+
+        const reversed = MagicMeio (tripled).reverse().value();
+        console.log(reversed);
+        // 输出: [9, 6, 3]
+    </script>
+
+</body>
+
+</html>
