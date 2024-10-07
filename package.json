@@ -12,7 +12,10 @@
     ],
     "scripts": {
         "test": "jest",
-        "build": "webpack --config webpack.config.js"
+        "build": "webpack --config webpack.config.js",
+        "preversion": "npm run test && npm run build",
+        "version": "git add -A dist && git commit -m 'build: release v%s'",
+        "postversion": "git push && git push --tags && npm publish"
     },
     "author": "zhangquanmei",
     "license": "MIT",
