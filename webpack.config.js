@@ -23,13 +23,13 @@ const commonJsConfig = {
   optimization: {
     usedExports: true,
   },
-  plugins: [
-    new BundleAnalyzerPlugin({
-      analyzerPort: 8889, 
-      generateStatsFile: true,
-      statsOptions: { source: false },
-    }),
-  ],
+//   plugins: [
+//     new BundleAnalyzerPlugin({
+//       analyzerPort: 8889, 
+//       generateStatsFile: true,
+//       statsOptions: { source: false },
+//     }),
+//   ],
 };
 
 const esmConfig = {
@@ -60,13 +60,13 @@ const esmConfig = {
   optimization: {
     usedExports: true,
   },
-  plugins: [
-    new BundleAnalyzerPlugin({
-      analyzerPort: 8890,  
-      generateStatsFile: true,
-      statsOptions: { source: false },
-    }),
-  ],
+//   plugins: [
+//     new BundleAnalyzerPlugin({
+//       analyzerPort: 8890,  
+//       generateStatsFile: true,
+//       statsOptions: { source: false },
+//     }),
+//   ],
 };
 
 module.exports = [commonJsConfig, esmConfig];
