@@ -3,15 +3,20 @@ name: Publish to NPM
 on:
   push:
     branches:
-      - main 
+      - main
 
 jobs:
   publish:
     runs-on: ubuntu-latest
 
+    permissions:
+      contents: write
+
     steps:
     - name: Checkout code
       uses: actions/checkout@v2
+      with:
+        fetch-depth: '0'  # 确保我们能获取完整的 git history 以生成 tag
 
     - name: Setup Node.js
       uses: actions/setup-node@v2
@@ -29,13 +34,13 @@ jobs:
 
     - name: Bump version and push tag
       id: bump_version
-      uses: anothrNick/github-tag-action@v1.37.0
+      uses: anothrNick/github-tag-action@v1
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       with:
-        github_token: ${{ secrets.GITHUB_TOKEN }}
-        default_bump: patch
-        release_branches: main
+        default_bump: patch  # 你可以使用 patch, minor 或 major
         tag_prefix: ''
-        custom_tag: ''
+        release_branches: main
 
     - name: Publish to NPM
       env:
