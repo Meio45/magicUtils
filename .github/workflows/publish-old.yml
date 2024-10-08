@@ -16,12 +16,12 @@ jobs:
     - name: Checkout code
       uses: actions/checkout@v2
       with:
-        fetch-depth: '0'  # 确保我们能获取完整的 git history 以生成 tag
+        fetch-depth: '0'
 
     - name: Setup Node.js
       uses: actions/setup-node@v2
       with:
-        node-version: '18.17.0'
+        node-version: '20.8.1'
 
     - name: Install dependencies
       run: npm install
@@ -32,15 +32,26 @@ jobs:
     - name: Build project
       run: npm run build
 
+    - name: Remove existing tag if exists
+      run: |
+        TAG="v$(node -p "require('./package.json').version")"
+        if git rev-parse "$TAG" >/dev/null 2>&1; then
+          git tag -d "$TAG"
+          git push origin :refs/tags/"$TAG"
+        fi
+
     - name: Bump version and push tag
       id: bump_version
       uses: anothrNick/github-tag-action@v1
       env:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       with:
-        default_bump: patch  # 你可以使用 patch, minor 或 major
+        default_bump: patch
         tag_prefix: ''
         release_branches: main
+
+    - name: Configure npm to use GitHub Packages registry
+      run: echo "//registry.npmjs.org/:_authToken=${{ secrets.NPM_TOKEN }}" > ~/.npmrc
 
     - name: Publish to NPM
       env:
