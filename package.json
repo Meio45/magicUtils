@@ -15,7 +15,7 @@
         "build": "webpack --config webpack.config.js",
         "preversion": "npm run test",
         "version": "npm run build && git add .",
-        "postversion": "git push && npm publish --access public"
+        "postversion": "git push && git push --tags && npm publish --access public"
     },
     "author": "zhangquanmei",
     "license": "MIT",
