@@ -6,25 +6,48 @@ on:
       - main
 
 jobs:
-  publish:
+  release:
     runs-on: ubuntu-latest
-
     permissions:
       contents: write
+      packages: write
+      id-token: write
 
     steps:
     - name: Checkout code
       uses: actions/checkout@v2
-      with:
-        fetch-depth: '0'
 
     - name: Setup Node.js
       uses: actions/setup-node@v2
       with:
         node-version: '16.15.0'
 
-    - name: Install dependencies
-      run: npm install
+    - name: Disable npm proxy (if any)
+      run: npm config set proxy null && npm config set https-proxy null
+
+    - name: Use official npm registry
+      run: npm config set registry https://registry.npmjs.org/
+
+    - name: Install dependencies with retry
+      run: |
+        retry() {
+          local n=1
+          local max=5
+          local delay=15
+          while true; do
+            "$@" && break || {
+              if [[ $n -lt $max ]]; then
+                ((n++))
+                echo "Command failed. Attempt $n/$max:"
+                sleep $delay;
+              else
+                echo "The command has failed after $n attempts."
+                return 1
+              fi
+            }
+          done
+        }
+        retry npm install
 
     - name: Run tests
       run: npm test
@@ -32,28 +55,8 @@ jobs:
     - name: Build project
       run: npm run build
 
-    - name: Remove existing tag if exists
-      run: |
-        TAG="v$(node -p "require('./package.json').version")"
-        if git rev-parse "$TAG" >/dev/null 2>&1; then
-          git tag -d "$TAG"
-          git push origin :refs/tags/"$TAG"
-        fi
-
-    - name: Bump version and push tag
-      id: bump_version
-      uses: anothrNick/github-tag-action@1.39.0
+    - name: Release
       env:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-      with:
-        default_bump: patch
-        tag_prefix: ''
-        release_branches: main
-
-    - name: Configure npm to use GitHub Packages registry
-      run: echo "//registry.npmjs.org/:_authToken=${{ secrets.NPM_TOKEN }}" > ~/.npmrc
-
-    - name: Publish to NPM
-      env:
         NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
-      run: npm publish
+      run: npx semantic-release
