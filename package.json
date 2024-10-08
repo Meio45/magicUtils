@@ -1,6 +1,6 @@
 {
     "name": "@zhangquanmei/magic-utils",
-    "version": "1.0.44",
+    "version": "1.0.45",
     "description": "utils包",
     "main": "./dist/index.cjs.js",
     "exports": {
