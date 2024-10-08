@@ -33,14 +33,12 @@ jobs:
       run: npm run build
 
     - name: Bump version and push tag
-      id: bump_version
-      uses: anothrNick/github-tag-action@v1
-      env:
-        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-      with:
-        default_bump: patch  # 你可以使用 patch, minor 或 major
-        tag_prefix: ''
-        release_branches: main
+        id: bump_version
+        uses: anothrNick/github-tag-action@v1
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          default_bump: patch  # 你可以使用 patch, minor 或 major
+          release_branches: main
 
     - name: Publish to NPM
       env:
