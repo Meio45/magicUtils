@@ -13,7 +13,8 @@
     "scripts": {
         "test": "jest",
         "build": "webpack --config webpack.config.js",
-        "preversion": "npm run test && npm run build"
+        "preversion": "npm run test && npm run build",
+        "postversion": "git add . && git commit -m 'update' && git push && npm publish"
     },
     "author": "zhangquanmei",
     "license": "MIT",
