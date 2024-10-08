@@ -29,7 +29,7 @@ const commonJsConfig = {
 //       generateStatsFile: true,
 //       statsOptions: { source: false },
 //     }),
-//   ],
+//   ],修改一下
 };
 
 const esmConfig = {
