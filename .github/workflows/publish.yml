@@ -15,8 +15,6 @@ jobs:
     steps:
     - name: Checkout code
       uses: actions/checkout@v2
-      with:
-        fetch-depth: '0'  # 确保我们能获取完整的 git history 以生成 tag
 
     - name: Setup Node.js
       uses: actions/setup-node@v2
@@ -34,15 +32,17 @@ jobs:
 
     - name: Bump version and push tag
       id: bump_version
-      uses: anothrNick/github-tag-action@v1
+      uses: omerxx/npm-semantic-release@2.1.0
       env:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       with:
-        default_bump: patch  # 你可以使用 patch, minor 或 major
-        tag_prefix: ''
-        release_branches: main
+        NPM_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
+        bump_policy: minor
+
+    - name: Configure npm to use GitHub Packages registry
+      run: echo "//registry.npmjs.org/:_authToken=${{ secrets.NPM_TOKEN }}" > ~/.npmrc
 
     - name: Publish to NPM
+      run: npm publish
       env:
         NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
-      run: npm publish
