@@ -14,7 +14,8 @@
         "test": "jest",
         "build": "webpack --config webpack.config.js",
         "preversion": "npm run test && npm run build",
-        "version": "git add -A && git commit -m 'update'"
+        "version": "git add -A && git commit -m 'update' && git push",
+        "postversion": "npm publish --access public"
     },
     "author": "zhangquanmei",
     "license": "MIT",
