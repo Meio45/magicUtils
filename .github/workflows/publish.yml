@@ -15,11 +15,13 @@ jobs:
     steps:
     - name: Checkout code
       uses: actions/checkout@v2
+      with:
+        fetch-depth: '0'
 
     - name: Setup Node.js
       uses: actions/setup-node@v2
       with:
-        node-version: '14'
+        node-version: '16.15.0'
 
     - name: Install dependencies
       run: npm install
@@ -30,19 +32,28 @@ jobs:
     - name: Build project
       run: npm run build
 
+    - name: Remove existing tag if exists
+      run: |
+        TAG="v$(node -p "require('./package.json').version")"
+        if git rev-parse "$TAG" >/dev/null 2>&1; then
+          git tag -d "$TAG"
+          git push origin :refs/tags/"$TAG"
+        fi
+
     - name: Bump version and push tag
       id: bump_version
-      uses: omerxx/npm-semantic-release@2.1.0
+      uses: anothrNick/github-tag-action@1.39.0
       env:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       with:
-        NPM_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
-        bump_policy: minor
+        default_bump: patch
+        tag_prefix: ''
+        release_branches: main
 
     - name: Configure npm to use GitHub Packages registry
       run: echo "//registry.npmjs.org/:_authToken=${{ secrets.NPM_TOKEN }}" > ~/.npmrc
 
     - name: Publish to NPM
-      run: npm publish
       env:
         NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
+      run: npm publish
